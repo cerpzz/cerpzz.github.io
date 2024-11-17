@@ -69,6 +69,45 @@
             background: var(--primary-color-dark);
         }
 
+        /* Search Filter */
+        .search-filter-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px; /* Add spacing between search and anime list */
+        }
+
+        .search-input {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 300px; /* Set a width for the search input */
+            margin-right: 10px; /* Space between input and button */
+        }
+
+        .search-button {
+            padding: 10px 15px;
+            border-radius: 5px;
+            background: var(--primary-color);
+            border: none;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .search-button:hover {
+            background-color: var(--primary-color-dark);
+        }
+
+        /* Loading Indicator */
+        .loading {
+            display: none;
+            text-align: center;
+            font-size: 1.5em;
+            color: var(--text-color);
+            margin: 20px 0; /* Space around the loading indicator */
+        }
+
         /* Main Content */
         main {
             flex-grow: 1;
@@ -304,7 +343,8 @@
             flex: 1;
         }
 
-        .settings-option input[type="range"], .settings-option select {
+        .settings-option input[type="range"],
+        .settings-option select {
             flex: 2;
             border: none;
             border-radius: 5px;
@@ -474,6 +514,11 @@
     </header>
     
     <main>
+        <div class="search-filter-container">
+            <input type="text" id="search-input" class="search-input" placeholder="Search for anime..." aria-label="Search">
+            <button id="search-button" class="search-button">Search</button>
+        </div>
+        <div class="loading" id="loading-indicator">Loading...</div>
         <section id="anime-list">
             <!-- Anime items will be dynamically loaded here -->
         </section>
@@ -567,12 +612,25 @@
             const backgroundAnimationToggle = document.getElementById('background-animation');
             const fontSelect = document.getElementById('font-select');
             const colorPicker = document.getElementById('color-picker');
+            const searchInput = document.getElementById('search-input');
+            const searchButton = document.getElementById('search-button');
+            const loadingIndicator = document.getElementById('loading-indicator');
             let currentPage = 1;
 
             // Set the initial theme to dark
             document.body.dataset.theme = 'dark';
             themeSelect.value = 'dark'; // Set the selected value for the theme select
             icon.textContent = '🌙'; // Set icon based on the dark theme
+
+            // Search functionality
+            searchButton.addEventListener('click', () => {
+                const searchTerm = searchInput.value.trim();
+                if (searchTerm) {
+                    fetchAnimeData(searchTerm);
+                } else {
+                    fetchAnimeData(); // Fetch default anime if no search term
+                }
+            });
 
             // Close settings modal
             closeSettings.addEventListener('click', () => {
@@ -648,13 +706,13 @@
             prevPageButton.addEventListener('click', () => {
                 if (currentPage > 1) {
                     currentPage--;
-                    fetchAnimeData();
+                    fetchAnimeData(); // Fetch anime data for the previous page
                 }
             });
 
             nextPageButton.addEventListener('click', () => {
                 currentPage++;
-                fetchAnimeData();
+                fetchAnimeData(); // Fetch anime data for the next page
             });
 
             // Font Size Adjustment
@@ -690,7 +748,9 @@
             // Fetch and display anime data
             fetchAnimeData();
 
-            function fetchAnimeData() {
+            // Fetch anime data based on search term or default
+            function fetchAnimeData(searchTerm = '') {
+                loadingIndicator.style.display = 'block'; // Show loading indicator
                 fetch('https://graphql.anilist.co', {
                     method: 'POST',
                     headers: {
@@ -700,7 +760,7 @@
                     body: JSON.stringify({
                         query: `{
                             Page(page: ${currentPage}, perPage: 36) {
-                                media(type: ANIME, sort: POPULARITY_DESC) {
+                                media(type: ANIME, sort: POPULARITY_DESC, search: "${searchTerm}") {
                                     id
                                     title {
                                         romaji
@@ -724,6 +784,7 @@
                 })
                     .then(response => response.json())
                     .then(data => {
+                        loadingIndicator.style.display = 'none'; // Hide loading indicator
                         if (data.data && data.data.Page && data.data.Page.media) {
                             displayAnime(data.data.Page.media);
                         } else {
@@ -731,6 +792,7 @@
                         }
                     })
                     .catch(error => {
+                        loadingIndicator.style.display = 'none'; // Hide loading indicator
                         console.error('Error fetching anime data:', error);
                     });
             }
