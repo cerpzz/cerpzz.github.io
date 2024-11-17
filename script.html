@@ -8,11 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Leckerli+One&family=Roboto:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         /* General Reset */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         /* Global Styles */
         body {
@@ -77,26 +73,49 @@
             margin-bottom: 20px; /* Add spacing between search and anime list */
         }
 
-        .search-input {
+        .search-input,
+        .sort-select,
+        .search-button {
             padding: 10px;
             border-radius: 5px;
             border: 1px solid #ccc;
+            transition: 0.3s; /* Add transition to all inputs and buttons */
+        }
+
+        .search-input {
             width: 300px; /* Set a width for the search input */
             margin-right: 10px; /* Space between input and button */
+            background: var(--item-background); /* Ensure background fits the theme */
+            color: var(--text-color); /* Text color from current theme */
+        }
+
+        .sort-select {
+            padding: 10px; /* Consistent padding */
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background: var(--item-background); /* Match theme */
+            color: var(--text-color); /* Text color from current theme */
+            font-size: 1rem; /* Font size for readability */
         }
 
         .search-button {
-            padding: 10px 15px;
-            border-radius: 5px;
             background: var(--primary-color);
-            border: none;
             color: white;
             cursor: pointer;
-            transition: background-color 0.3s;
+            margin-left: 10px;
         }
 
         .search-button:hover {
             background-color: var(--primary-color-dark);
+        }
+
+        /* Focus styles for better accessibility */
+        .search-input:focus,
+        .sort-select:focus,
+        .search-button:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 5px rgba(255, 69, 0, 0.5); /* Match the primary theme with a glow */
         }
 
         /* Loading Indicator */
@@ -120,20 +139,25 @@
         /* Anime List */
         #anime-list {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px; /* Increased gap for better spacing */
             width: 100%;
             max-width: 1200px;
         }
 
+        /* Enhanced Anime Item */
         .anime-item {
             background-color: var(--item-background);
-            border-radius: 15px;
+            border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
             cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
-            position: relative;
+            transition: transform 0.2s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center items */
+            padding: 10px; /* Add padding */
+            height: 350px; /* Uniform height for items */
         }
 
         .anime-item:hover {
@@ -143,27 +167,40 @@
 
         .anime-item img {
             width: 100%;
-            height: auto;
-            aspect-ratio: 2 / 3; /* Maintain aspect ratio */
+            height: 200px; /* Specify height for uniformity */
             object-fit: cover;
-            border-radius: 15px 15px 0 0;
-            transition: transform 0.3s;
+            border-radius: 10px; /* Round corners */
+            transition: transform 0.3s; 
         }
 
         .anime-item h2 {
             font-size: 1.2rem;
-            font-weight: 500;
-            margin: 1rem;
+            font-weight: 600;
+            margin: 10px 0 5px; /* Adjusted margins */
             color: var(--text-color);
             text-align: center;
         }
 
         .anime-item p {
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             color: var(--text-color-secondary);
-            margin: 0 1rem 1rem;
-            line-height: 1.5;
+            margin: 5px 0; /* Adjusted margin */
+            line-height: 1.4;
             text-align: center;
+        }
+
+        .rating-and-genre {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-top: auto; /* Push to bottom */
+            padding-top: 10px; /* Spacer above */
+        }
+
+        .star-rating {
+            color: var(--primary-color);
+            font-size: 1.2rem; /* Size of stars */
         }
 
         /* Anime Detail Modal Improvements */
@@ -512,10 +549,16 @@
             </button>
         </div>
     </header>
-    
+
     <main>
         <div class="search-filter-container">
             <input type="text" id="search-input" class="search-input" placeholder="Search for anime..." aria-label="Search">
+            <select id="sort-select" class="sort-select" style="margin-left: 10px;">
+                <option value="POPULARITY_DESC">Sort by Popularity</option>
+                <option value="SCORE_DESC">Sort by Score</option>
+                <option value="TITLE_ASC">Sort by Title (A-Z)</option>
+                <option value="TITLE_DESC">Sort by Title (Z-A)</option>
+            </select>
             <button id="search-button" class="search-button">Search</button>
         </div>
         <div class="loading" id="loading-indicator">Loading...</div>
@@ -527,7 +570,7 @@
             <button id="next-page">Next</button>
         </div>
     </main>
-    
+
     <div id="anime-detail">
         <div class="anime-detail-content">
             <button id="close-detail" aria-label="Close detail view">&times;</button>
@@ -615,6 +658,7 @@
             const searchInput = document.getElementById('search-input');
             const searchButton = document.getElementById('search-button');
             const loadingIndicator = document.getElementById('loading-indicator');
+            const sortSelect = document.getElementById('sort-select'); // For sorting options
             let currentPage = 1;
 
             // Set the initial theme to dark
@@ -622,14 +666,22 @@
             themeSelect.value = 'dark'; // Set the selected value for the theme select
             icon.textContent = '🌙'; // Set icon based on the dark theme
 
-            // Search functionality
-            searchButton.addEventListener('click', () => {
-                const searchTerm = searchInput.value.trim();
-                if (searchTerm) {
-                    fetchAnimeData(searchTerm);
-                } else {
-                    fetchAnimeData(); // Fetch default anime if no search term
+            // Search functionality using Enter key
+            searchInput.addEventListener('keypress', (event) => {
+                if (event.key === 'Enter') {
+                    const searchTerm = searchInput.value.trim();
+                    const sortBy = sortSelect.value; // Get the selected sorting option
+                    currentPage = 1; // Reset page when searching
+                    fetchAnimeData(searchTerm, sortBy); // Fetch anime data
                 }
+            });
+
+            // Auto-fetch anime data when sorting changes
+            sortSelect.addEventListener('change', () => {
+                const searchTerm = searchInput.value.trim();
+                const sortBy = sortSelect.value; // Get the selected sorting option
+                currentPage = 1; // Reset page when sorting
+                fetchAnimeData(searchTerm, sortBy); // Fetch anime data
             });
 
             // Close settings modal
@@ -665,6 +717,8 @@
                     orange: 'logo_orange.png',
                     'cia-pink': 'logo_pink.png', // Cia's Pink Theme Logo
                 };
+
+                // Logo element (currently not in your HTML, can be added if needed)
                 const logo = document.getElementById('logo');
                 logo.src = logoMap[theme] || logoMap['dark']; // Default to dark logo if no match
             }
@@ -748,8 +802,8 @@
             // Fetch and display anime data
             fetchAnimeData();
 
-            // Fetch anime data based on search term or default
-            function fetchAnimeData(searchTerm = '') {
+            // Fetch anime data based on search term and sort option
+            function fetchAnimeData(searchTerm = '', sortBy = 'POPULARITY_DESC') {
                 loadingIndicator.style.display = 'block'; // Show loading indicator
                 fetch('https://graphql.anilist.co', {
                     method: 'POST',
@@ -759,8 +813,8 @@
                     },
                     body: JSON.stringify({
                         query: `{
-                            Page(page: ${currentPage}, perPage: 36) {
-                                media(type: ANIME, sort: POPULARITY_DESC, search: "${searchTerm}") {
+                            Page(page: ${currentPage}, perPage: 35) {
+                                media(type: ANIME, sort: ${sortBy}, ${searchTerm ? `search: "${searchTerm}"` : ''}) {
                                     id
                                     title {
                                         romaji
@@ -782,19 +836,20 @@
                         }`
                     })
                 })
-                    .then(response => response.json())
-                    .then(data => {
-                        loadingIndicator.style.display = 'none'; // Hide loading indicator
-                        if (data.data && data.data.Page && data.data.Page.media) {
-                            displayAnime(data.data.Page.media);
-                        } else {
-                            console.error("No media found in the response.");
-                        }
-                    })
-                    .catch(error => {
-                        loadingIndicator.style.display = 'none'; // Hide loading indicator
-                        console.error('Error fetching anime data:', error);
-                    });
+                .then(response => response.json())
+                .then(data => {
+                    loadingIndicator.style.display = 'none'; // Hide loading indicator
+                    if (data.data && data.data.Page && data.data.Page.media) {
+                        displayAnime(data.data.Page.media);
+                    } else {
+                        console.error("No media found in the response.");
+                        animeList.innerHTML = '<p>No anime found.</p>';
+                    }
+                })
+                .catch(error => {
+                    loadingIndicator.style.display = 'none'; // Hide loading indicator
+                    console.error('Error fetching anime data:', error);
+                });
             }
 
             function displayAnime(animeListData) {
@@ -810,8 +865,11 @@
                     animeItem.innerHTML = `
                         <img src="${anime.coverImage.large}" alt="${anime.title.romaji} cover image">
                         <h2>${anime.title.romaji}</h2>
-                        <p>${anime.genres.join(', ')}</p>
-                        <p>Rating: ${anime.averageScore}</p>
+                        <p class="anime-genre">${anime.genres.join(', ')}</p>
+                        <div class="rating-and-genre">
+                            <p class="star-rating">${generateStars(anime.averageScore)}</p>
+                            <p>${anime.averageScore || 'N/A'}%</p>
+                        </div>
                     `;
                     animeItem.addEventListener('click', () => {
                         showDetail(anime);
@@ -859,7 +917,7 @@
 
                 for (let i = 0; i < 5; i++) {
                     if (i < starCount) {
-                        starsHTML += '<span class="star">⭐</span>'; // Filled star
+                        starsHTML += '<span class="star">★</span>'; // Filled star
                     } else {
                         starsHTML += '<span class="star">☆</span>'; // Empty star
                     }
