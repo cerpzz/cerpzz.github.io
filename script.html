@@ -58,15 +58,14 @@
             border-radius: 25px;
             padding: 10px 15px;
             cursor: pointer;
-            transition: background-color 0.3s, transform 0.2s;
+            transition: background-color 0.3s, transform 0.2s, opacity 0.3s; /* Added opacity transition */
             font-size: 1.2rem;
             color: white;
             margin-left: 10px; /* Add spacing between buttons */
         }
 
         .common-button:hover {
-            transform: scale(1.05);
-            background: var(--primary-color-dark);
+            opacity: 0.8; /* Fade effect on hover */
         }
 
         /* Search Filter */
@@ -107,10 +106,12 @@
             color: white;
             cursor: pointer;
             margin-left: 10px;
+            transition: background-color 0.3s;
         }
 
         .search-button:hover {
-            background-color: var(--primary-color-dark);
+            background: var(--primary-color-dark);
+            opacity: 0.8; /* Fade effect on hover */
         }
 
         /* Focus styles for better accessibility */
@@ -156,7 +157,7 @@
             overflow: hidden;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.3s;
+            transition: transform 0.2s, box-shadow 0.3s, background-color 0.3s; /* Added background color transition */
             display: flex;
             flex-direction: column;
             align-items: center; /* Center items */
@@ -167,6 +168,8 @@
         .anime-item:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+            background-color: var(--primary-color-light); /* Change background on hover */
+            transition: background-color 0.3s; /* Smooth background change on hover */
         }
 
         .anime-item img {
@@ -313,6 +316,7 @@
         #pagination button:hover {
             background-color: var(--primary-color-dark);
             transform: translateY(-2px);
+            opacity: 0.8; /* Fade effect on hover */
         }
 
         /* Footer */
@@ -422,6 +426,7 @@
             --item-background: rgba(40, 40, 40, 0.8); /* Anime Item Background */
             --primary-color: #FF4500; /* Fiery Main Color */
             --primary-color-dark: #D84315; /* Darker Fiery Color */
+            --primary-color-light: rgba(255, 69, 0, 0.6); /* Light Version for Hover Effect */
             --logo: url('logo_dark.png'); /* Dark Theme Logo */
         }
 
@@ -433,6 +438,7 @@
             --item-background: rgba(255, 255, 255, 0.15); /* Light Anime Item Background */
             --primary-color: #FF4500; /* Fiery Main Color */
             --primary-color-dark: #D84315; /* Darker Fiery Color */
+            --primary-color-light: rgba(255, 69, 0, 0.3); /* Light Version for Hover Effect */
             --logo: url('logo_light.png'); /* Light Theme Logo */
         }
 
@@ -465,6 +471,7 @@
         .anime-button:hover {
             background-color: var(--primary-color-dark);
             transform: scale(1.05);
+            opacity: 0.8; /* Fade effect on hover */
         }
     </style>
 </head>
@@ -652,7 +659,23 @@
             colorPicker.addEventListener('input', function () {
                 const customColor = this.value;
                 document.documentElement.style.setProperty('--primary-color', customColor);
+                document.documentElement.style.setProperty('--primary-color-dark', darkenColor(customColor)); // Update dark variant
+                document.documentElement.style.setProperty('--primary-color-light', lightenColor(customColor)); // Update light variant
             });
+
+            function lightenColor(hex) {
+                var r = Math.min(255, parseInt(hex.substr(1, 2), 16) + 50);
+                var g = Math.min(255, parseInt(hex.substr(3, 2), 16) + 50);
+                var b = Math.min(255, parseInt(hex.substr(5, 2), 16) + 50);
+                return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+            }
+
+            function darkenColor(hex) {
+                var r = Math.max(0, parseInt(hex.substr(1, 2), 16) - 50);
+                var g = Math.max(0, parseInt(hex.substr(3, 2), 16) - 50);
+                var b = Math.max(0, parseInt(hex.substr(5, 2), 16) - 50);
+                return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+            }
 
             // Close detail view by clicking the close button
             closeDetail.addEventListener('click', () => {
