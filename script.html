@@ -58,7 +58,7 @@
             border-radius: 25px;
             padding: 10px 15px;
             cursor: pointer;
-            transition: background-color 0.3s, transform 0.2s, opacity 0.3s; /* Added opacity transition */
+            transition: background-color 0.3s, transform 0.2s, opacity 0.3s;
             font-size: 1.2rem;
             color: white;
             margin-left: 10px; /* Add spacing between buttons */
@@ -82,23 +82,19 @@
             padding: 10px;
             border-radius: 5px;
             border: 1px solid #ccc;
-            transition: 0.3s; /* Add transition to all inputs and buttons */
+            transition: 0.3s;
         }
 
         .search-input {
-            width: 300px; /* Set a width for the search input */
-            margin-right: 10px; /* Space between input and button */
-            background: var(--item-background); /* Ensure background fits the theme */
-            color: var(--text-color); /* Text color from current theme */
+            width: 300px;
+            margin-right: 10px;
+            background: var(--item-background);
+            color: var(--text-color);
         }
 
         .sort-select {
-            padding: 10px; /* Consistent padding */
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background: var(--item-background); /* Match theme */
-            color: var(--text-color); /* Text color from current theme */
-            font-size: 1rem; /* Font size for readability */
+            background: var(--item-background);
+            color: var(--text-color);
         }
 
         .search-button {
@@ -145,7 +141,7 @@
         #anime-list {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px; /* Increased gap for better spacing */
+            gap: 20px; 
             width: 100%;
             max-width: 1200px;
         }
@@ -157,26 +153,25 @@
             overflow: hidden;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.3s, background-color 0.3s; /* Added background color transition */
+            transition: transform 0.2s, box-shadow 0.3s, background-color 0.3s;
             display: flex;
             flex-direction: column;
-            align-items: center; /* Center items */
-            padding: 10px; /* Add padding */
-            height: 350px; /* Uniform height for items */
+            align-items: center; 
+            padding: 10px; 
+            height: 350px;
         }
 
         .anime-item:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
-            background-color: var(--primary-color-light); /* Change background on hover */
-            transition: background-color 0.3s; /* Smooth background change on hover */
+            background-color: var(--primary-color-light);
         }
 
         .anime-item img {
             width: 100%;
-            height: 200px; /* Specify height for uniformity */
+            height: 200px; 
             object-fit: cover;
-            border-radius: 10px; /* Round corners */
+            border-radius: 10px;
             transition: transform 0.3s;
         }
 
@@ -201,18 +196,18 @@
             justify-content: space-between;
             align-items: center;
             width: 100%;
-            margin-top: auto; /* Push to bottom */
-            padding-top: 10px; /* Spacer above */
+            margin-top: auto; 
+            padding-top: 10px; 
         }
 
         .star-rating {
             color: var(--primary-color);
-            font-size: 1.2rem; /* Size of stars */
+            font-size: 1.2rem; 
         }
 
         /* Anime Detail Modal Improvements */
         #anime-detail {
-            display: none; /* Keep it hidden initially */
+            display: none; 
             position: fixed;
             top: 0;
             left: 0;
@@ -237,7 +232,7 @@
             border-radius: 15px;
             box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
             width: 90%;
-            max-width: 600px; /* Updated for mobile compatibility */
+            max-width: 600px; 
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -310,7 +305,7 @@
             font-weight: 600;
             color: white;
             transition: background-color 0.3s, transform 0.3s;
-            flex-grow: 1; /* Makes buttons take equal space */
+            flex-grow: 1; 
         }
 
         #pagination button:hover {
@@ -329,12 +324,12 @@
 
         footer p {
             color: var(--text-color);
-            font-size: 0.8rem; /* Smaller font for mobile */
+            font-size: 0.8rem; 
         }
 
         /* Settings Modal */
         #settings-modal {
-            display: none; /* Hidden by default */
+            display: none; 
             position: fixed;
             top: 0;
             left: 0;
@@ -355,27 +350,27 @@
 
         .settings-content {
             background-color: var(--item-background);
-            padding: 20px; /* Reduced padding */
+            padding: 20px; 
             border-radius: 15px;
             width: 90%;
-            max-width: 400px; /* More mobile-friendly width */
+            max-width: 400px; 
             box-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
             text-align: left;
-            overflow-y: auto; /* Allow scrolling */
-            max-height: 80vh; /* Limit modal height */
+            overflow-y: auto; 
+            max-height: 80vh; 
         }
 
         .settings-content h2 {
             color: var(--text-color);
             margin-bottom: 20px;
-            font-size: 1.5rem; /* Adjusted for mobile */
+            font-size: 1.5rem; 
             font-weight: 600;
             text-align: center;
         }
 
         /* Setting Options */
         .settings-option {
-            margin-bottom: 10px; /* Reduce margin for mobile */
+            margin-bottom: 10px; 
             color: var(--text-color);
             display: flex;
             align-items: center;
@@ -402,14 +397,14 @@
             background: var(--primary-color);
             border: none;
             color: white;
-            padding: 10px 15px; /* Reduced padding for mobile */
+            padding: 10px 15px; 
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s, transform 0.2s;
             width: 100%;
-            font-size: 1rem; /* Adjusted font size */
+            font-size: 1rem; 
             text-align: center;
-            margin-top: 10px; /* Reduced margin for mobile */
+            margin-top: 10px; 
         }
 
         .reset-button:hover {
@@ -419,36 +414,36 @@
 
         /* Color Variables for Themes */
         :root {
-            --background-color: #121212; /* Dark Theme Background */
-            --text-color: #e0e0e0; /* Light Text Color */
-            --text-color-secondary: #b0b0b0; /* Secondary Light Text Color */
-            --header-background: rgba(50, 50, 50, 0.9); /* Header Background */
-            --item-background: rgba(40, 40, 40, 0.8); /* Anime Item Background */
-            --primary-color: #FF4500; /* Fiery Main Color */
-            --primary-color-dark: #D84315; /* Darker Fiery Color */
-            --primary-color-light: rgba(255, 69, 0, 0.6); /* Light Version for Hover Effect */
-            --logo: url('logo_dark.png'); /* Dark Theme Logo */
+            --background-color: #121212; 
+            --text-color: #e0e0e0; 
+            --text-color-secondary: #b0b0b0; 
+            --header-background: rgba(50, 50, 50, 0.9); 
+            --item-background: rgba(40, 40, 40, 0.8); 
+            --primary-color: #FF4500; 
+            --primary-color-dark: #D84315; 
+            --primary-color-light: rgba(255, 69, 0, 0.6); 
+            --logo: url('logo_dark.png'); 
         }
 
         [data-theme="light"] {
-            --background-color: #ffffff; /* Light Theme Background */
-            --text-color: #121212; /* Dark Text Color */
-            --text-color-secondary: #444444; /* Secondary Dark Text Color */
-            --header-background: rgba(255, 255, 255, 0.9); /* Light Header Background */
-            --item-background: rgba(255, 255, 255, 0.15); /* Light Anime Item Background */
-            --primary-color: #FF4500; /* Fiery Main Color */
-            --primary-color-dark: #D84315; /* Darker Fiery Color */
-            --primary-color-light: rgba(255, 69, 0, 0.3); /* Light Version for Hover Effect */
-            --logo: url('logo_light.png'); /* Light Theme Logo */
+            --background-color: #ffffff; 
+            --text-color: #121212; 
+            --text-color-secondary: #444444; 
+            --header-background: rgba(255, 255, 255, 0.9); 
+            --item-background: rgba(255, 255, 255, 0.15); 
+            --primary-color: #FF4500; 
+            --primary-color-dark: #D84315; 
+            --primary-color-light: rgba(255, 69, 0, 0.3); 
+            --logo: url('logo_light.png'); 
         }
 
         /* Other theme color variables here ... */
-        /* Continue adding colorful, blue, green, etc. as per your previous CSS */
+        /* Add additional theme CSS here */
 
         /* Star Rating */
         .star-rating {
             font-size: 1.5rem;
-            color: var(--primary-color); /* Fiery Star Color */
+            color: var(--primary-color); 
         }
 
         .star {
@@ -463,9 +458,9 @@
             padding: 12px 20px;
             cursor: pointer;
             transition: background-color 0.3s, transform 0.3s;
-            font-size: 1rem; /* Set a consistent font size */
+            font-size: 1rem; 
             color: white;
-            margin-top: 10px; /* Spacing for mobile */
+            margin-top: 10px; 
         }
 
         .anime-button:hover {
@@ -499,9 +494,7 @@
             <button id="search-button" class="search-button">Search</button>
         </div>
         <div class="loading" id="loading-indicator">Loading...</div>
-        <section id="anime-list">
-            <!-- Anime items will be dynamically loaded here -->
-        </section>
+        <section id="anime-list"></section>
         <div id="pagination">
             <button id="prev-page">Previous</button>
             <button id="next-page">Next</button>
@@ -593,93 +586,88 @@
             const fontSelect = document.getElementById('font-select');
             const colorPicker = document.getElementById('color-picker');
             const searchInput = document.getElementById('search-input');
-            const searchButton = document.getElementById('search-button');
             const loadingIndicator = document.getElementById('loading-indicator');
-            const sortSelect = document.getElementById('sort-select'); // For sorting options
+            const sortSelect = document.getElementById('sort-select'); 
             let currentPage = 1;
 
             // Set the initial theme to dark
             document.body.dataset.theme = 'dark';
-            themeSelect.value = 'dark'; // Set the selected value for the theme select
-            icon.textContent = '🌙'; // Set icon based on the dark theme
+            themeSelect.value = 'dark'; 
+            icon.textContent = '🌙'; 
 
             // Search functionality using Enter key
             searchInput.addEventListener('keypress', (event) => {
                 if (event.key === 'Enter') {
                     const searchTerm = searchInput.value.trim();
-                    const sortBy = sortSelect.value; // Get the selected sorting option
-                    currentPage = 1; // Reset page when searching
-                    fetchAnimeData(searchTerm, sortBy); // Fetch anime data
+                    const sortBy = sortSelect.value; 
+                    currentPage = 1; 
+                    fetchAnimeData(searchTerm, sortBy); 
                 }
             });
 
             // Auto-fetch anime data when sorting changes
             sortSelect.addEventListener('change', () => {
                 const searchTerm = searchInput.value.trim();
-                const sortBy = sortSelect.value; // Get the selected sorting option
-                currentPage = 1; // Reset page when sorting
-                fetchAnimeData(searchTerm, sortBy); // Fetch anime data
+                const sortBy = sortSelect.value; 
+                currentPage = 1; 
+                fetchAnimeData(searchTerm, sortBy);
             });
 
             // Close settings modal
             closeSettings.addEventListener('click', () => {
-                settingsModal.classList.remove('show'); // Hide settings modal
+                settingsModal.classList.remove('show'); 
             });
 
             // Open settings modal
             settingsButton.addEventListener('click', () => {
-                settingsModal.classList.add('show'); // Show settings modal
-                settingsModal.style.opacity = 1; // Set opacity for fade-in effect
+                settingsModal.classList.add('show'); 
+                settingsModal.style.opacity = 1; 
             });
 
             // Theme Selection Change
             themeSelect.addEventListener('change', function () {
                 const newTheme = this.value;
                 document.body.dataset.theme = newTheme;
-                localStorage.setItem('theme', newTheme); // Save theme in local storage
+                localStorage.setItem('theme', newTheme); 
                 icon.textContent = newTheme === 'dark' ? '🌙' : newTheme === 'light' ? '🌞' : '🎨';
             });
 
             // Font Selection
             fontSelect.addEventListener('change', function () {
                 const selectedFont = this.value;
-                document.body.style.fontFamily = selectedFont; // Change the font family based on the selection
+                document.body.style.fontFamily = selectedFont; 
             });
 
             // Background Animation Toggle
             backgroundAnimationToggle.addEventListener('change', function () {
-                if (this.checked) {
-                    document.body.classList.add('animated-background'); // Add class for animated background
-                } else {
-                    document.body.classList.remove('animated-background'); // Remove class for static background
-                }
+                document.body.classList.toggle('animated-background', this.checked);
             });
 
             // Custom Color Picker
             colorPicker.addEventListener('input', function () {
                 const customColor = this.value;
                 document.documentElement.style.setProperty('--primary-color', customColor);
-                document.documentElement.style.setProperty('--primary-color-dark', darkenColor(customColor)); // Update dark variant
-                document.documentElement.style.setProperty('--primary-color-light', lightenColor(customColor)); // Update light variant
+                document.documentElement.style.setProperty('--primary-color-dark', darkenColor(customColor)); 
+                document.documentElement.style.setProperty('--primary-color-light', lightenColor(customColor)); 
             });
 
             function lightenColor(hex) {
-                var r = Math.min(255, parseInt(hex.substr(1, 2), 16) + 50);
-                var g = Math.min(255, parseInt(hex.substr(3, 2), 16) + 50);
-                var b = Math.min(255, parseInt(hex.substr(5, 2), 16) + 50);
+                let r = Math.min(255, parseInt(hex.substr(1, 2), 16) + 50);
+                let g = Math.min(255, parseInt(hex.substr(3, 2), 16) + 50);
+                let b = Math.min(255, parseInt(hex.substr(5, 2), 16) + 50);
                 return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
             }
 
             function darkenColor(hex) {
-                var r = Math.max(0, parseInt(hex.substr(1, 2), 16) - 50);
-                var g = Math.max(0, parseInt(hex.substr(3, 2), 16) - 50);
-                var b = Math.max(0, parseInt(hex.substr(5, 2), 16) - 50);
+                let r = Math.max(0, parseInt(hex.substr(1, 2), 16) - 50);
+                let g = Math.max(0, parseInt(hex.substr(3, 2), 16) - 50);
+                let b = Math.max(0, parseInt(hex.substr(5, 2), 16) - 50);
                 return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
             }
 
             // Close detail view by clicking the close button
             closeDetail.addEventListener('click', () => {
-                animeDetail.classList.remove('show'); // Hide the modal
+                animeDetail.classList.remove('show'); 
             });
 
             // Close detail view by clicking outside the modal content
@@ -693,31 +681,31 @@
             prevPageButton.addEventListener('click', () => {
                 if (currentPage > 1) {
                     currentPage--;
-                    fetchAnimeData(); // Fetch anime data for the previous page
+                    fetchAnimeData(); 
                 }
             });
 
             nextPageButton.addEventListener('click', () => {
                 currentPage++;
-                fetchAnimeData(); // Fetch anime data for the next page
+                fetchAnimeData(); 
             });
 
             // Font Size Adjustment
             fontSizeControl.addEventListener('input', function () {
                 const fontSize = this.value;
-                document.documentElement.style.fontSize = fontSize + 'px'; // Adjust font size
+                document.documentElement.style.fontSize = fontSize + 'px'; 
             });
 
             // Reset settings to default
             resetSettingsButton.addEventListener('click', () => {
                 document.body.dataset.theme = 'dark';
-                localStorage.setItem('theme', 'dark'); // Reset stored theme
-                fontSizeControl.value = 16; // Reset font size slider
-                themeSelect.value = 'dark'; // Reset select box
-                icon.textContent = '🌙'; // Reset icon
-                document.documentElement.style.fontSize = '16px'; // Reset font size
-                fontSelect.value = 'Roboto'; // Reset font select
-                document.body.style.fontFamily = 'Roboto'; // Reset font family
+                localStorage.setItem('theme', 'dark'); 
+                fontSizeControl.value = 16; 
+                themeSelect.value = 'dark'; 
+                icon.textContent = '🌙'; 
+                document.documentElement.style.fontSize = '16px'; 
+                fontSelect.value = 'Roboto'; 
+                document.body.style.fontFamily = 'Roboto'; 
             });
 
             // Fetch and display anime data
@@ -725,7 +713,7 @@
 
             // Fetch anime data based on search term and sort option
             function fetchAnimeData(searchTerm = '', sortBy = 'POPULARITY_DESC') {
-                loadingIndicator.style.display = 'block'; // Show loading indicator
+                loadingIndicator.style.display = 'block'; 
                 fetch('https://graphql.anilist.co', {
                     method: 'POST',
                     headers: {
@@ -759,7 +747,7 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-                    loadingIndicator.style.display = 'none'; // Hide loading indicator
+                    loadingIndicator.style.display = 'none'; 
                     if (data.data && data.data.Page && data.data.Page.media) {
                         displayAnime(data.data.Page.media);
                     } else {
@@ -768,13 +756,13 @@
                     }
                 })
                 .catch(error => {
-                    loadingIndicator.style.display = 'none'; // Hide loading indicator
+                    loadingIndicator.style.display = 'none'; 
                     console.error('Error fetching anime data:', error);
                 });
             }
 
             function displayAnime(animeListData) {
-                animeList.innerHTML = ''; // Clear existing anime list
+                animeList.innerHTML = ''; 
                 if (animeListData.length === 0) {
                     animeList.innerHTML = '<p>No anime found.</p>';
                     return;
@@ -804,47 +792,46 @@
                 document.getElementById('detail-image').src = anime.coverImage.large;
                 document.getElementById('detail-title').textContent = anime.title.romaji;
                 document.getElementById('detail-genres').textContent = `Genres: ${anime.genres.join(', ')}`;
-                document.getElementById('detail-rating').innerHTML = ratingStars; // Append star rating
+                document.getElementById('detail-rating').innerHTML = ratingStars; 
 
-                // Clean up description by replacing multiple <br> tags with a single space
                 const cleanedDescription = anime.description
-                    .replace(/<br\s*\/?>/gi, ' ') // Replace <br> and <br/> tags with a space
-                    .replace(/\s+/g, ' ') // Replace multiple spaces with a single space
-                    .trim(); // Trim leading and trailing whitespace
+                    .replace(/<br\s*\/?>/gi, ' ')
+                    .replace(/\s+/g, ' ')
+                    .trim(); 
+                    
                 document.getElementById('detail-description').textContent = cleanedDescription || 'No description available.';
                 document.getElementById('detail-episodes').textContent = `Episodes: ${anime.episodes || 'N/A'}`;
                 document.getElementById('detail-duration').textContent = `Duration: ${anime.duration || 'N/A'} min`;
 
-                // Set the streaming episode URL for Crunchyroll link
                 const streamingEpisodes = anime.streamingEpisodes;
-                const crunchyrollLinks = streamingEpisodes.filter(episode => episode.site === "Crunchyroll"); // Filter only Crunchyroll links
+                const crunchyrollLinks = streamingEpisodes.filter(episode => episode.site === "Crunchyroll"); 
 
                 const crunchyrollButton = document.getElementById('crunchyroll-button');
 
                 if (crunchyrollLinks.length > 0) {
-                    const firstCrunchyrollLink = crunchyrollLinks[0].url; // Use the first available Crunchyroll link
-                    crunchyrollButton.style.display = 'inline-block'; // Show the button
-                    crunchyrollButton.onclick = () => window.open(firstCrunchyrollLink, '_blank'); // Open Crunchyroll link in a new tab
+                    const firstCrunchyrollLink = crunchyrollLinks[0].url; 
+                    crunchyrollButton.style.display = 'inline-block'; 
+                    crunchyrollButton.onclick = () => window.open(firstCrunchyrollLink, '_blank'); 
                 } else {
-                    crunchyrollButton.style.display = 'none'; // Hide if no Crunchyroll links
+                    crunchyrollButton.style.display = 'none'; 
                 }
 
-                animeDetail.classList.add('show'); // Show the detailed modal
+                animeDetail.classList.add('show'); 
             }
 
             function generateStars(score) {
-                const starCount = Math.round(score / 20); // Get how many stars to show
+                const starCount = Math.round(score / 20); 
                 let starsHTML = '';
 
                 for (let i = 0; i < 5; i++) {
                     if (i < starCount) {
-                        starsHTML += '<span class="star">★</span>'; // Filled star
+                        starsHTML += '<span class="star">★</span>'; 
                     } else {
-                        starsHTML += '<span class="star">☆</span>'; // Empty star
+                        starsHTML += '<span class="star">☆</span>'; 
                     }
                 }
 
-                return starsHTML; // Return the star HTML
+                return starsHTML; 
             }
         });
     </script>
