@@ -29,7 +29,7 @@
 
         header {
             background: var(--header-background);
-            padding: 15px 30px;
+            padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -43,8 +43,12 @@
 
         header h1 {
             color: var(--text-color);
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-family: 'Leckerli One', cursive;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            max-width: 70%;
         }
 
         /* Common Button Styles */
@@ -52,10 +56,10 @@
             background: var(--primary-color);
             border: none;
             border-radius: 25px;
-            padding: 8px 12px;
+            padding: 10px 15px;
             cursor: pointer;
             transition: background-color 0.3s, transform 0.2s;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             color: white;
             margin-left: 10px; /* Add spacing between buttons */
         }
@@ -77,8 +81,8 @@
         /* Anime List */
         #anime-list {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
             width: 100%;
             max-width: 1200px;
         }
@@ -100,14 +104,15 @@
 
         .anime-item img {
             width: 100%;
-            height: 350px;
+            height: auto;
+            aspect-ratio: 2 / 3; /* Maintain aspect ratio */
             object-fit: cover;
             border-radius: 15px 15px 0 0;
             transition: transform 0.3s;
         }
 
         .anime-item h2 {
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             font-weight: 500;
             margin: 1rem;
             color: var(--text-color);
@@ -115,7 +120,7 @@
         }
 
         .anime-item p {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             color: var(--text-color-secondary);
             margin: 0 1rem 1rem;
             line-height: 1.5;
@@ -145,11 +150,11 @@
 
         .anime-detail-content {
             background-color: var(--item-background);
-            padding: 30px;
+            padding: 20px;
             border-radius: 15px;
             box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
             width: 90%;
-            max-width: 800px;
+            max-width: 600px; /* Updated for mobile compatibility */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -157,11 +162,12 @@
         }
 
         #anime-detail img {
-            width: 200px;
-            height: 300px;
+            width: 150px;
+            height: auto;
+            aspect-ratio: 2 / 3;
             object-fit: cover;
             border-radius: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             transition: transform 0.3s;
         }
 
@@ -170,14 +176,14 @@
         }
 
         #anime-detail h2 {
-            font-size: 2rem;
+            font-size: 1.5rem;
             font-weight: 700;
             margin: 10px 0;
             color: var(--text-color);
         }
 
         #anime-detail p {
-            font-size: 1rem;
+            font-size: 0.9rem;
             margin: 5px 0;
             color: var(--text-color);
             text-align: center;
@@ -217,10 +223,11 @@
             padding: 10px 15px;
             border-radius: 25px;
             cursor: pointer;
-            font-size: 1.2rem;
+            font-size: 1rem;
             font-weight: 600;
             color: white;
             transition: background-color 0.3s, transform 0.3s;
+            flex-grow: 1; /* Makes buttons take equal space */
         }
 
         #pagination button:hover {
@@ -231,13 +238,14 @@
         /* Footer */
         footer {
             text-align: center;
-            padding: 20px;
+            padding: 10px 20px;
             background-color: var(--header-background);
             box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.1);
         }
 
         footer p {
             color: var(--text-color);
+            font-size: 0.8rem; /* Smaller font for mobile */
         }
 
         /* Settings Modal */
@@ -263,25 +271,27 @@
 
         .settings-content {
             background-color: var(--item-background);
-            padding: 30px;
+            padding: 20px; /* Reduced padding */
             border-radius: 15px;
             width: 90%;
-            max-width: 450px;
+            max-width: 400px; /* More mobile-friendly width */
             box-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
             text-align: left;
+            overflow-y: auto; /* Allow scrolling */
+            max-height: 80vh; /* Limit modal height */
         }
 
         .settings-content h2 {
             color: var(--text-color);
             margin-bottom: 20px;
-            font-size: 1.8rem;
+            font-size: 1.5rem; /* Adjusted for mobile */
             font-weight: 600;
             text-align: center;
         }
 
         /* Setting Options */
         .settings-option {
-            margin-bottom: 15px;
+            margin-bottom: 10px; /* Reduce margin for mobile */
             color: var(--text-color);
             display: flex;
             align-items: center;
@@ -289,62 +299,37 @@
         }
 
         .settings-option label {
-            margin-right: 10px;
-            font-size: 1.1rem;
+            margin-right: 5px;
+            font-size: 1rem;
             flex: 1;
         }
 
-        .settings-option input[type="range"] {
-            -webkit-appearance: none;
-            width: 100%;
-            height: 8px;
-            background: var(--primary-color);
+        .settings-option input[type="range"], .settings-option select {
+            flex: 2;
+            border: none;
             border-radius: 5px;
-            outline: none;
-            transition: background 0.3s;
-        }
-
-        .settings-option input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: var(--primary-color-dark);
-            cursor: pointer;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-        }
-
-        .settings-option input[type="range"]:hover {
-            background: var(--primary-color-dark);
+            background: var(--item-background);
+            color: var(--text-color);
+            padding: 5px;
         }
 
         .reset-button {
             background: var(--primary-color);
             border: none;
             color: white;
-            padding: 12px 20px;
+            padding: 10px 15px; /* Reduced padding for mobile */
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s, transform 0.2s;
             width: 100%;
-            font-size: 1.1rem;
+            font-size: 1rem; /* Adjusted font size */
             text-align: center;
-            margin-top: 15px;
+            margin-top: 10px; /* Reduced margin for mobile */
         }
 
         .reset-button:hover {
             background: var(--primary-color-dark);
             transform: translateY(-2px);
-        }
-
-        /* Additional Settings Styles */
-        #animation-toggle {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            color: var(--text-color);
         }
 
         /* Color Variables for Themes */
@@ -465,9 +450,9 @@
             padding: 12px 20px;
             cursor: pointer;
             transition: background-color 0.3s, transform 0.3s;
-            font-size: 1.2rem;
+            font-size: 1rem; /* Set a consistent font size */
             color: white;
-            margin-top: 10px;
+            margin-top: 10px; /* Spacing for mobile */
         }
 
         .anime-button:hover {
@@ -518,7 +503,7 @@
             <h2>Settings</h2>
             <div class="settings-option">
                 <label for="theme-select">Theme:</label>
-                <select id="theme-select" style="flex: 2; border: none; border-radius: 5px; background: var(--item-background); color: var(--text-color); padding: 5px;">
+                <select id="theme-select" style="flex: 2;">
                     <option value="dark">Dark</option>
                     <option value="light">Light</option>
                     <option value="colorful">Colorful</option>
@@ -544,7 +529,7 @@
             </div>
             <div class="settings-option">
                 <label for="font-select">Font Style:</label>
-                <select id="font-select" style="flex: 2; border: none; border-radius: 5px; background: var(--item-background); color: var(--text-color); padding: 5px;">
+                <select id="font-select" style="flex: 2;">
                     <option value="Roboto">Roboto</option>
                     <option value="Leckerli One">Leckerli One</option>
                     <option value="Georgia">Georgia</option>
