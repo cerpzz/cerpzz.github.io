@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AniStation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Leckerli+One&family=Roboto:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Global Styles */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: var(--background-color);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
+            padding: 0;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: var(--header-background);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            border-radius: 10px;
+            transition: background 0.3s ease;
+        }
+
+        header h1 {
+            color: var(--text-color);
+            font-size: 1.8rem;
+            font-family: 'Leckerli One', cursive;
+        }
+
+        /* Common Button Styles */
+        .common-button {
+            background: var(--primary-color);
+            border: none;
+            border-radius: 25px;
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            font-size: 1.5rem;
+            color: white;
+            margin-left: 10px; /* Add spacing between buttons */
+        }
+
+        .common-button:hover {
+            transform: scale(1.05);
+            background: var(--primary-color-dark);
+        }
+
+        /* Main Content */
+        main {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            align-items: center;
+        }
+
+        /* Anime List */
+        #anime-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .anime-item {
+            background-color: var(--item-background);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
+
+        .anime-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .anime-item img {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            border-radius: 15px 15px 0 0;
+            transition: transform 0.3s;
+        }
+
+        .anime-item h2 {
+            font-size: 1.4rem;
+            font-weight: 500;
+            margin: 1rem;
+            color: var(--text-color);
+            text-align: center;
+        }
+
+        .anime-item p {
+            font-size: 0.9rem;
+            color: var(--text-color-secondary);
+            margin: 0 1rem 1rem;
+            line-height: 1.5;
+            text-align: center;
+        }
+
+        /* Anime Detail Modal Improvements */
+        #anime-detail {
+            display: none; /* Keep it hidden initially */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 0.4s ease-in-out;
+            opacity: 0;
+        }
+
+        #anime-detail.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        .anime-detail-content {
+            background-color: var(--item-background);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
+            width: 90%;
+            max-width: 800px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        #anime-detail img {
+            width: 200px;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            transition: transform 0.3s;
+        }
+
+        #anime-detail img:hover {
+            transform: scale(1.05);
+        }
+
+        #anime-detail h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 10px 0;
+            color: var(--text-color);
+        }
+
+        #anime-detail p {
+            font-size: 1rem;
+            margin: 5px 0;
+            color: var(--text-color);
+            text-align: center;
+            max-width: 400px;
+        }
+
+        #close-detail {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--primary-color);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            padding: 10px;
+            font-size: 1.5rem;
+            transition: background-color 0.3s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        #close-detail:hover {
+            background: var(--primary-color-dark);
+        }
+
+        /* Pagination Buttons */
+        #pagination {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 40px 0;
+        }
+
+        #pagination button {
+            background: var(--primary-color);
+            border: none;
+            padding: 10px 15px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: white;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        #pagination button:hover {
+            background-color: var(--primary-color-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: var(--header-background);
+            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        footer p {
+            color: var(--text-color);
+        }
+
+        /* Settings Modal */
+        #settings-modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 500;
+            transition: opacity 0.4s;
+            opacity: 0;
+        }
+
+        #settings-modal.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        .settings-content {
+            background-color: var(--item-background);
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 450px;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+            text-align: left;
+        }
+
+        .settings-content h2 {
+            color: var(--text-color);
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        /* Setting Options */
+        .settings-option {
+            margin-bottom: 15px;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .settings-option label {
+            margin-right: 10px;
+            font-size: 1.1rem;
+            flex: 1;
+        }
+
+        .settings-option input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 8px;
+            background: var(--primary-color);
+            border-radius: 5px;
+            outline: none;
+            transition: background 0.3s;
+        }
+
+        .settings-option input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary-color-dark);
+            cursor: pointer;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .settings-option input[type="range"]:hover {
+            background: var(--primary-color-dark);
+        }
+
+        .reset-button {
+            background: var(--primary-color);
+            border: none;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            width: 100%;
+            font-size: 1.1rem;
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .reset-button:hover {
+            background: var(--primary-color-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Additional Settings Styles */
+        #animation-toggle {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: var(--text-color);
+        }
+
+        /* Color Variables for Themes */
+        :root {
+            --background-color: #121212; /* Dark Theme Background */
+            --text-color: #e0e0e0; /* Light Text Color */
+            --text-color-secondary: #b0b0b0; /* Secondary Light Text Color */
+            --header-background: rgba(50, 50, 50, 0.9); /* Header Background */
+            --item-background: rgba(40, 40, 40, 0.8); /* Anime Item Background */
+            --primary-color: #FF4500; /* Fiery Main Color */
+            --primary-color-dark: #D84315; /* Darker Fiery Color */
+            --logo: url('logo_dark.png'); /* Dark Theme Logo */
+        }
+
+        [data-theme="light"] {
+            --background-color: #ffffff; /* Light Theme Background */
+            --text-color: #121212; /* Dark Text Color */
+            --text-color-secondary: #444444; /* Secondary Dark Text Color */
+            --header-background: rgba(255, 255, 255, 0.9); /* Light Header Background */
+            --item-background: rgba(255, 255, 255, 0.15); /* Light Anime Item Background */
+            --primary-color: #FF4500; /* Fiery Main Color */
+            --primary-color-dark: #D84315; /* Darker Fiery Color */
+            --logo: url('logo_light.png'); /* Light Theme Logo */
+        }
+
+        [data-theme="colorful"] {
+            --background-color: #FFEBEE; /* Light Pink Background */
+            --text-color: #BF360C; /* Dark Red Text Color */
+            --text-color-secondary: #C2185B; /* Pink Text Color */
+            --header-background: rgba(255, 155, 155, 0.9); /* Light Red Header Background */
+            --item-background: rgba(255, 205, 210, 0.8); /* Pale Pink Anime Item Background */
+            --primary-color: #1976D2; /* Blue Main Color */
+            --primary-color-dark: #0D47A1; /* Darker Blue Color */
+            --logo: url('logo_colorful.png'); /* Colorful Theme Logo */
+        }
+
+        [data-theme="blue"] {
+            --background-color: #E3F2FD; /* Light Blue Background */
+            --text-color: #0D47A1; /* Dark Blue Text Color */
+            --text-color-secondary: #1E88E5; /* Lighter Blue Text Color */
+            --header-background: rgba(144, 202, 249, 0.9); /* Light Blue Header Background */
+            --item-background: rgba(225, 245, 254, 0.9); /* Pale Blue Anime Item Background */
+            --primary-color: #0D47A1; /* Dark Blue Main Color */
+            --primary-color-dark: #0A3D91; /* Darker Blue Color */
+            --logo: url('logo_blue.png'); /* Blue Theme Logo */
+        }
+
+        [data-theme="green"] {
+            --background-color: #E8F5E9; /* Light Green Background */
+            --text-color: #1B5E20; /* Dark Green Text Color */
+            --text-color-secondary: #388E3C; /* Lighter Green Text Color */
+            --header-background: rgba(204, 255, 204, 0.9); /* Light Green Header Background */
+            --item-background: rgba(232, 245, 233, 0.9); /* Pale Green Anime Item Background */
+            --primary-color: #1B5E20; /* Dark Green Main Color */
+            --primary-color-dark: #1B3F1A; /* Darker Green Color */
+            --logo: url('logo_green.png'); /* Green Theme Logo */
+        }
+
+        [data-theme="purple"] {
+            --background-color: #EDE7F6; /* Light Purple Background */
+            --text-color: #6A1B9A; /* Dark Purple Text Color */
+            --text-color-secondary: #8E24AA; /* Lighter Purple Text Color */
+            --header-background: rgba(220, 223, 245, 0.9); /* Light Purple Header Background */
+            --item-background: rgba(237, 231, 246, 0.9); /* Pale Purple Anime Item Background */
+            --primary-color: #6A1B9A; /* Dark Purple Main Color */
+            --primary-color-dark: #4A148C; /* Darker Purple Color */
+            --logo: url('logo_purple.png'); /* Purple Theme Logo */
+        }
+
+        [data-theme="red"] {
+            --background-color: #FFEBEE; /* Light Red Background */
+            --text-color: #C62828; /* Dark Red Text Color */
+            --text-color-secondary: #D32F2F; /* Lighter Red Text Color */
+            --header-background: rgba(255, 205, 210, 0.9); /* Light Red Header Background */
+            --item-background: rgba(255, 224, 224, 0.9); /* Pale Red Anime Item Background */
+            --primary-color: #C62828; /* Dark Red Main Color */
+            --primary-color-dark: #B71C1C; /* Darker Red Color */
+            --logo: url('logo_red.png'); /* Red Theme Logo */
+        }
+
+        [data-theme="orange"] {
+            --background-color: #FFF3E0; /* Light Orange Background */
+            --text-color: #E65100; /* Dark Orange Text Color */
+            --text-color-secondary: #FF9800; /* Lighter Orange Text Color */
+            --header-background: rgba(255, 204, 128, 0.9); /* Light Orange Header Background */
+            --item-background: rgba(255, 239, 204, 0.9); /* Pale Orange Anime Item Background */
+            --primary-color: #E65100; /* Dark Orange Main Color */
+            --primary-color-dark: #BF360C; /* Darker Orange Color */
+            --logo: url('logo_orange.png'); /* Orange Theme Logo */
+        }
+
+        [data-theme="cia-pink"] {
+            --background-color: #FFCEEA; /* Updated Light Pink Background */
+            --text-color: #880E4F; /* Darker Pink Text Color */
+            --text-color-secondary: #D81B60; /* Pink Text Color */
+            --header-background: rgba(255, 182, 193, 0.9); /* Light Pink Header Background */
+            --item-background: rgba(255, 205, 210, 0.8); /* Pale Pink Anime Item Background */
+            --primary-color: #D5006D; /* Dark Pink Main Color */
+            --primary-color-dark: #C51162; /* Darker Pink Color */
+            --logo: url('logo_pink.png'); /* Cia's Pink Theme Logo */
+        }
+
+        /* Star Rating */
+        .star-rating {
+            font-size: 1.5rem;
+            color: var(--primary-color); /* Fiery Star Color */
+        }
+
+        .star {
+            display: inline-block;
+        }
+
+        /* Button Style for Crunchyroll Link */
+        .anime-button {
+            background: var(--primary-color);
+            border: none;
+            border-radius: 25px;
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            font-size: 1.2rem;
+            color: white;
+            margin-top: 10px;
+        }
+
+        .anime-button:hover {
+            background-color: var(--primary-color-dark);
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+
+<body data-theme="dark">
+    <header>
+        <h1>AniStation</h1>
+        <div>
+            <button id="settings-button" class="common-button" aria-label="Settings">⚙️</button>
+            <button id="theme-toggle" class="common-button" aria-label="Toggle theme">
+                <span id="icon" class="moon">🌙</span>
+            </button>
+        </div>
+    </header>
+    
+    <main>
+        <section id="anime-list">
+            <!-- Anime items will be dynamically loaded here -->
+        </section>
+        <div id="pagination">
+            <button id="prev-page">Previous</button>
+            <button id="next-page">Next</button>
+        </div>
+    </main>
+    
+    <div id="anime-detail">
+        <div class="anime-detail-content">
+            <button id="close-detail" aria-label="Close detail view">&times;</button>
+            <img id="detail-image" src="" alt="Anime cover" />
+            <h2 id="detail-title"></h2>
+            <p id="detail-genres"></p>
+            <p class="star-rating" id="detail-rating"></p>
+            <p id="detail-description"></p>
+            <p id="detail-episodes"></p>
+            <p id="detail-duration"></p>
+            <button id="crunchyroll-button" style="display: none;" class="anime-button">Watch on Crunchyroll</button>
+        </div>
+    </div>
+
+    <div id="settings-modal">
+        <div class="settings-content">
+            <button id="close-settings" aria-label="Close settings" style="background: transparent; border: none; color: var(--text-color); font-size: 2rem; cursor: pointer;">&times;</button>
+            <h2>Settings</h2>
+            <div class="settings-option">
+                <label for="theme-select">Theme:</label>
+                <select id="theme-select" style="flex: 2; border: none; border-radius: 5px; background: var(--item-background); color: var(--text-color); padding: 5px;">
+                    <option value="dark">Dark</option>
+                    <option value="light">Light</option>
+                    <option value="colorful">Colorful</option>
+                    <option value="blue">Blue</option>
+                    <option value="green">Green</option>
+                    <option value="purple">Purple</option>
+                    <option value="red">Red</option>
+                    <option value="orange">Orange</option>
+                    <option value="cia-pink">Cia's Pink</option> <!-- New Pink Theme -->
+                </select>
+            </div>
+            <div class="settings-option">
+                <label for="font-size">Font Size:</label>
+                <input type="range" id="font-size" min="12" max="24" value="16">
+            </div>
+            <div class="settings-option">
+                <label for="animation-speed">Animation Speed:</label>
+                <input type="range" id="animation-speed" min="100" max="1000" value="300">
+            </div>
+            <div class="settings-option" id="animation-toggle">
+                <label for="background-animation">Background Animation:</label>
+                <input type="checkbox" id="background-animation" checked />
+            </div>
+            <div class="settings-option">
+                <label for="font-select">Font Style:</label>
+                <select id="font-select" style="flex: 2; border: none; border-radius: 5px; background: var(--item-background); color: var(--text-color); padding: 5px;">
+                    <option value="Roboto">Roboto</option>
+                    <option value="Leckerli One">Leckerli One</option>
+                    <option value="Georgia">Georgia</option>
+                    <option value="Courier New">Courier New</option>
+                </select>
+            </div>
+            <div class="settings-option">
+                <label for="color-picker">Custom Color:</label>
+                <input type="color" id="color-picker" value="#FF4500">
+            </div>
+            <button id="reset-settings" class="reset-button">Reset Settings</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2024 AniStation</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const themeToggle = document.getElementById('theme-toggle');
+            const icon = document.getElementById('icon');
+            const animeList = document.getElementById('anime-list');
+            const animeDetail = document.getElementById('anime-detail');
+            const closeDetail = document.getElementById('close-detail');
+            const prevPageButton = document.getElementById('prev-page');
+            const nextPageButton = document.getElementById('next-page');
+            const settingsButton = document.getElementById('settings-button');
+            const settingsModal = document.getElementById('settings-modal');
+            const closeSettings = document.getElementById('close-settings');
+            const fontSizeControl = document.getElementById('font-size');
+            const animationSpeedControl = document.getElementById('animation-speed');
+            const themeSelect = document.getElementById('theme-select');
+            const resetSettingsButton = document.getElementById('reset-settings');
+            const backgroundAnimationToggle = document.getElementById('background-animation');
+            const fontSelect = document.getElementById('font-select');
+            const colorPicker = document.getElementById('color-picker');
+            let currentPage = 1;
+
+            // Set the initial theme to dark
+            document.body.dataset.theme = 'dark';
+            themeSelect.value = 'dark'; // Set the selected value for the theme select
+            icon.textContent = '🌙'; // Set icon based on the dark theme
+
+            // Close settings modal
+            closeSettings.addEventListener('click', () => {
+                settingsModal.classList.remove('show'); // Hide settings modal
+            });
+
+            // Open settings modal
+            settingsButton.addEventListener('click', () => {
+                settingsModal.classList.add('show'); // Show settings modal
+                settingsModal.style.opacity = 1; // Set opacity for fade-in effect
+            });
+
+            // Theme Selection Change
+            themeSelect.addEventListener('change', function () {
+                const newTheme = this.value;
+                document.body.dataset.theme = newTheme;
+                localStorage.setItem('theme', newTheme); // Save theme in local storage
+                icon.textContent = newTheme === 'dark' ? '🌙' : newTheme === 'light' ? '🌞' : '🎨';
+                changeLogo(newTheme); // Update logo based on the selected theme
+            });
+
+            // Change Logo Based on Theme
+            function changeLogo(theme) {
+                const logoMap = {
+                    dark: 'logo_dark.png',
+                    light: 'logo_light.png',
+                    colorful: 'logo_colorful.png',
+                    blue: 'logo_blue.png',
+                    green: 'logo_green.png',
+                    purple: 'logo_purple.png',
+                    red: 'logo_red.png',
+                    orange: 'logo_orange.png',
+                    'cia-pink': 'logo_pink.png', // Cia's Pink Theme Logo
+                };
+                const logo = document.getElementById('logo');
+                logo.src = logoMap[theme] || logoMap['dark']; // Default to dark logo if no match
+            }
+
+            // Font Selection
+            fontSelect.addEventListener('change', function () {
+                const selectedFont = this.value;
+                document.body.style.fontFamily = selectedFont; // Change the font family based on the selection
+            });
+
+            // Background Animation Toggle
+            backgroundAnimationToggle.addEventListener('change', function () {
+                if (this.checked) {
+                    document.body.classList.add('animated-background'); // Add class for animated background
+                } else {
+                    document.body.classList.remove('animated-background'); // Remove class for static background
+                }
+            });
+
+            // Custom Color Picker
+            colorPicker.addEventListener('input', function () {
+                const customColor = this.value;
+                document.documentElement.style.setProperty('--primary-color', customColor);
+            });
+
+            // Close detail view by clicking the close button
+            closeDetail.addEventListener('click', () => {
+                animeDetail.classList.remove('show'); // Hide the modal
+            });
+
+            // Close detail view by clicking outside the modal content
+            animeDetail.addEventListener('click', (e) => {
+                if (e.target === animeDetail) {
+                    animeDetail.classList.remove('show');
+                }
+            });
+
+            // Pagination Buttons
+            prevPageButton.addEventListener('click', () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    fetchAnimeData();
+                }
+            });
+
+            nextPageButton.addEventListener('click', () => {
+                currentPage++;
+                fetchAnimeData();
+            });
+
+            // Font Size Adjustment
+            fontSizeControl.addEventListener('input', function () {
+                const fontSize = this.value;
+                document.documentElement.style.fontSize = fontSize + 'px'; // Adjust font size
+            });
+
+            // Animation Speed Adjustment (Example usage)
+            animationSpeedControl.addEventListener('input', function () {
+                const speed = this.value;
+                console.log('Animation speed set to:', speed);
+            });
+
+            // Reset settings to default
+            resetSettingsButton.addEventListener('click', () => {
+                document.body.dataset.theme = 'dark';
+                localStorage.setItem('theme', 'dark'); // Reset stored theme
+                fontSizeControl.value = 16; // Reset font size slider
+                animationSpeedControl.value = 300; // Reset animation speed slider
+                themeSelect.value = 'dark'; // Reset select box
+                changeLogo('dark'); // Reset logo
+                document.documentElement.style.fontSize = '16px'; // Reset font size
+                icon.textContent = '🌙'; // Reset icon
+                fontSelect.value = 'Roboto'; // Reset font select
+                document.body.style.fontFamily = 'Roboto'; // Reset font family
+                colorPicker.value = '#FF4500'; // Reset color picker
+                document.documentElement.style.setProperty('--primary-color', '#FF4500'); // Reset primary color
+                backgroundAnimationToggle.checked = true; // Reset animation toggle
+                document.body.classList.add('animated-background'); // Ensure background animation is on
+            });
+
+            // Fetch and display anime data
+            fetchAnimeData();
+
+            function fetchAnimeData() {
+                fetch('https://graphql.anilist.co', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        query: `{
+                            Page(page: ${currentPage}, perPage: 36) {
+                                media(type: ANIME, sort: POPULARITY_DESC) {
+                                    id
+                                    title {
+                                        romaji
+                                    }
+                                    coverImage {
+                                        large
+                                    }
+                                    genres
+                                    averageScore
+                                    description
+                                    episodes
+                                    duration
+                                    streamingEpisodes {
+                                        url
+                                        site
+                                    }
+                                }
+                            }
+                        }`
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.data && data.data.Page && data.data.Page.media) {
+                            displayAnime(data.data.Page.media);
+                        } else {
+                            console.error("No media found in the response.");
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching anime data:', error);
+                    });
+            }
+
+            function displayAnime(animeListData) {
+                animeList.innerHTML = ''; // Clear existing anime list
+                if (animeListData.length === 0) {
+                    animeList.innerHTML = '<p>No anime found.</p>';
+                    return;
+                }
+
+                animeListData.forEach(anime => {
+                    const animeItem = document.createElement('div');
+                    animeItem.classList.add('anime-item');
+                    animeItem.innerHTML = `
+                        <img src="${anime.coverImage.large}" alt="${anime.title.romaji} cover image">
+                        <h2>${anime.title.romaji}</h2>
+                        <p>${anime.genres.join(', ')}</p>
+                        <p>Rating: ${anime.averageScore}</p>
+                    `;
+                    animeItem.addEventListener('click', () => {
+                        showDetail(anime);
+                    });
+                    animeList.appendChild(animeItem);
+                });
+            }
+
+            function showDetail(anime) {
+                const ratingStars = generateStars(anime.averageScore);
+                document.getElementById('detail-image').src = anime.coverImage.large;
+                document.getElementById('detail-title').textContent = anime.title.romaji;
+                document.getElementById('detail-genres').textContent = `Genres: ${anime.genres.join(', ')}`;
+                document.getElementById('detail-rating').innerHTML = ratingStars; // Append star rating
+
+                // Clean up description by replacing multiple <br> tags with a single space
+                const cleanedDescription = anime.description
+                    .replace(/<br\s*\/?>/gi, ' ') // Replace <br> and <br/> tags with a space
+                    .replace(/\s+/g, ' ') // Replace multiple spaces with a single space
+                    .trim(); // Trim leading and trailing whitespace
+                document.getElementById('detail-description').textContent = cleanedDescription || 'No description available.';
+                document.getElementById('detail-episodes').textContent = `Episodes: ${anime.episodes || 'N/A'}`;
+                document.getElementById('detail-duration').textContent = `Duration: ${anime.duration || 'N/A'} min`;
+
+                // Set the streaming episode URL for Crunchyroll link
+                const streamingEpisodes = anime.streamingEpisodes;
+                const crunchyrollLinks = streamingEpisodes.filter(episode => episode.site === "Crunchyroll"); // Filter only Crunchyroll links
+
+                const crunchyrollButton = document.getElementById('crunchyroll-button');
+
+                if (crunchyrollLinks.length > 0) {
+                    const firstCrunchyrollLink = crunchyrollLinks[0].url; // Use the first available Crunchyroll link
+                    crunchyrollButton.style.display = 'inline-block'; // Show the button
+                    crunchyrollButton.onclick = () => window.open(firstCrunchyrollLink, '_blank'); // Open Crunchyroll link in a new tab
+                } else {
+                    crunchyrollButton.style.display = 'none'; // Hide if no Crunchyroll links
+                }
+
+                animeDetail.classList.add('show'); // Show the detailed modal
+            }
+
+            function generateStars(score) {
+                const starCount = Math.round(score / 20); // Get how many stars to show
+                let starsHTML = '';
+
+                for (let i = 0; i < 5; i++) {
+                    if (i < starCount) {
+                        starsHTML += '<span class="star">⭐</span>'; // Filled star
+                    } else {
+                        starsHTML += '<span class="star">☆</span>'; // Empty star
+                    }
+                }
+
+                return starsHTML; // Return the star HTML
+            }
+        });
+    </script>
+</body>
+
+</html>
